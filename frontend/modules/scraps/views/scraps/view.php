@@ -36,6 +36,8 @@ $this->params['breadcrumbs'][] = $this->title;
         		},
         		],
             'scrap_status',
+            'scrap_price',
+            'scrap_quantity',
             'createdDate',
             'updatedDate',
         ],

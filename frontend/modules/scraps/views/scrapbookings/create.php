@@ -5,9 +5,9 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\scraps\models\ScrapBookings */
 
-$this->title = 'Book to sold Your Scrap';
+$this->title = 'Book to sold Your Scrap';/* 
 $this->params['breadcrumbs'][] = ['label' => 'Scrap Bookings', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = $this->title; */
 ?>
 <div class="scrap-bookings-create">
 

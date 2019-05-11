@@ -20,6 +20,7 @@ class Scraps extends \yii\db\ActiveRecord
      * {@inheritdoc}
      */
 	public $scrap_price;
+	public $scrap_quantity;
     public static function tableName()
     {
         return 'scraps';
@@ -32,7 +33,7 @@ class Scraps extends \yii\db\ActiveRecord
     {
         return [
             [['scarp_name', 'scrap_image', 'scrap_status', 'createdDate','scrap_price'], 'safe'],
-        	[['scarp_name',  'scrap_status', ], 'safe'],
+        	[['scarp_name',  'scrap_status','scrap_quantity'], 'safe'],
             [['scrap_image', 'scrap_status'], 'string'],
             [['createdDate', 'updatedDate'], 'safe'],
             [['scarp_name'], 'string', 'max' => 200],

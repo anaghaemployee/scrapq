@@ -18,7 +18,7 @@ class ScrapbookingsSearch extends ScrapBookings
     {
         return [
             [['scrap_book_id'], 'integer'],
-            [['name', 'email', 'mobile', 'pickup_address', 'pick_date', 'pickup_time', 'pickup_term', 'pickup_scrap', 'scrap_quantity', 'createdDate', 'updatedDate'], 'safe'],
+            [['name', 'email', 'mobile', 'pickup_address', 'pick_date', 'pickup_time', 'pickup_scrap', 'scrap_quantity', 'createdDate', 'updatedDate'], 'safe'],
         ];
     }
 
@@ -69,9 +69,7 @@ class ScrapbookingsSearch extends ScrapBookings
             ->andFilterWhere(['like', 'mobile', $this->mobile])
             ->andFilterWhere(['like', 'pickup_address', $this->pickup_address])
             ->andFilterWhere(['like', 'pickup_time', $this->pickup_time])
-            ->andFilterWhere(['like', 'pickup_term', $this->pickup_term])
-            ->andFilterWhere(['like', 'pickup_scrap', $this->pickup_scrap])
-            ->andFilterWhere(['like', 'scrap_quantity', $this->scrap_quantity]);
+            ;
 
         return $dataProvider;
     }

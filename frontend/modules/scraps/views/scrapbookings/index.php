@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'pickup_address:ntext',
             'pick_date',
             'pickup_time',
-            'pickup_term',
+            
             //'pickup_scrap',
             //'scrap_quantity',
             //'createdDate',

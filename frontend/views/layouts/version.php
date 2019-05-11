@@ -11,7 +11,35 @@ use common\widgets\Alert;
 ScrapAsset::register ( $this );
 use yii\widgets\ActiveForm;
 $homeUrl = Url::base();
+use frontend\modules\cart\models\Cart;
+$cartindex = Yii::$app->UrlManager->createUrl(['/cart/cart']);
+//$cartcount = Cart::find()->where(['session_id'=>Yii::$app->session->getId()])->count();
+
+
+if(isset($_GET['id']) && $_GET['id'] !=0){
+$id = $_GET['id'];
+$cartdata = Cart::find()->where(['booking_id'=>$id])->asarray()->all();
+}
+else{
+	$id =0;
+	$cartdata = Cart::find()->where(['session_id'=>Yii::$app->session->getId(),'booking_id'=>$id])->asarray()->all();
+	
+}
+$cartcount = 0;
+foreach($cartdata as $key=>$value){
+	$cartcount = $cartcount +$value['weightquantity'];
+}
+
 ?>
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "400px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+</script>
 <?php $this->beginPage()?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
@@ -37,6 +65,33 @@ $homeUrl = Url::base();
 	<div id="preloder">
 		<div class="loader"></div>
 	</div>
+	<div class="logo">
+						<a href="" class="site-logo">
+							<img src="<?php echo Url::base().'/v1/img/logo.png'?>" alt="Papex">
+						</a>
+						 
+						 
+		<span style="font-size:30px;cursor:pointer" class="loc" onclick="openNav()"><a href="#">Location
+          <span class="glyphicon glyphicon-map-marker" id="gly"></span>
+        </a></span>
+	</div>
+		<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <input type="text" id="searcharea" placeholder="Search for area, street name..."/>
+  
+  <button type="button" class="button" id="getcurrentlocation"><i class="fas fa-search-location"></i>Get Current Location</button>
+  
+  
+</div>
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "450px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+</script>
 
 	<!-- Header section -->
 	<header class="header-section">
@@ -50,23 +105,18 @@ $homeUrl = Url::base();
 						</a>
 					</div>
 					<div class="col-xl-6 col-lg-5">
-						<form class="header-search-form">
-							<input type="text" placeholder="Search on divisima ....">
-							<button><i class="flaticon-search"></i></button>
-						</form>
+						
 					</div>
 					<div class="col-xl-4 col-lg-5">
 						<div class="user-panel">
 							<div class="up-item">
-								<i class="flaticon-profile"></i>
-								<a href="#">Sign</a> In or <a href="#">Create Account</a>
-							</div>
+								</div>
 							<div class="up-item">
 								<div class="shopping-card">
 									<i class="flaticon-bag"></i>
-									<span>0</span>
-								</div>
-								<a href="#">Shopping Cart</a>
+									<span id="cartcount"><?= $cartcount?></span>
+								</div><a href="<?php echo $cartindex;?>&id=<?php echo $id;?>">Shopping Cart</a>
+
 							</div>
 						</div>
 					</div>
@@ -106,6 +156,41 @@ $homeUrl = Url::base();
 			</div>
 		</nav>
 	</header>
+	<div id="carousel" class="carousel slide" data-ride="carousel">
+
+				<!-- Menu -->
+				<ol class="carousel-indicators">
+					<li data-target="#carousel" data-slide-to="0" class="active"></li>
+					<li data-target="#carousel" data-slide-to="1"></li>
+					<li data-target="#carousel" data-slide-to="2"></li>
+				</ol>
+
+				<!-- Items -->
+				<div class="carousel-inner">
+
+					<div class="item active">
+						<img src="<?php echo './v1/img/1.jpg';?>" alt="Slide 1" />
+					</div>
+
+					<div class="item">
+						<img src="<?php echo './v1/img/2.jpg';?>" alt="Slide 2" />
+					</div>
+
+					<div class="item">
+						<img src="<?php echo './v1/img/3.jpg';?>" alt="Slide 3" />
+					</div>
+
+				</div>
+
+				<a href="#carousel" class="left carousel-control" data-slide="prev">
+					<span class="glyphicon glyphicon-chevron-left"></span>
+				</a>
+
+				<a href="#carousel" class="right carousel-control" data-slide="next">
+					<span class="glyphicon glyphicon-chevron-right"></span>
+				</a>
+
+			</div>
 	<!-- Header section end -->
 	<div class="body-content outer-top-xs" id="top-banner-and-menu">
 <?=Breadcrumbs::widget ( [ 'links' => isset ( $this->params ['breadcrumbs'] ) ? $this->params ['breadcrumbs'] : [ ] ] )?>
@@ -220,3 +305,35 @@ $homeUrl = Url::base();
 	</body>
 </html>
 <?php $this->endPage()?>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWyNo2jPv4iWnaoM2_6kTLKx2Zr-9Byb8">
+    </script>
+<script type="text/javascript">
+$(function () {
+	
+$('#getcurrentlocation').on('click' ,function(){
+	
+	 if (navigator.geolocation) {
+		    navigator.geolocation.getCurrentPosition(showPosition);
+		  } else { 
+		    x.innerHTML = "Geolocation is not supported by this browser.";
+		  }	
+	});
+});
+function showPosition(position) {
+	var lat = position.coords.latitude;
+	var lng = position.coords.longitude;
+	var google_map_position = new google.maps.LatLng( lat, lng );
+	  //console.log(google_map_position);
+	  var google_maps_geocoder = new google.maps.Geocoder();
+	  google_maps_geocoder.geocode(
+	      { 'latLng': google_map_position },
+	      function( results, status ) {
+	    	  if ( status == google.maps.GeocoderStatus.OK && results[0] ) {
+                 // console.log( results[0].formatted_address );
+	    		  document.getElementById("searcharea").value = results[0].formatted_address;
+                  
+              }
+	      }
+	  );
+	}
+</script>

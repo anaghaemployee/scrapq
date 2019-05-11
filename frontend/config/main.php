@@ -19,6 +19,12 @@ return [
 				'cart' => [
 						'class' => 'frontend\modules\cart\cart',
 				],
+				'exchange' => [
+						'class' => 'frontend\modules\exchange\Module',
+				],
+				'order' => [
+				'class' => 'frontend\modules\order\order',
+				],
     
     ],
     'components' => [

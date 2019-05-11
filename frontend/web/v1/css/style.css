@@ -339,6 +339,12 @@ ol {
 
 .site-logo {
 	display: inline-block;
+	padding-left: 50px;
+}
+
+.loc{
+	padding: 20px;
+	margin-top: 55px;
 }
 
 .header-search-form {
@@ -909,9 +915,9 @@ ol {
 
 .product-item .pi-text {
 	padding-top: 5px;
-	height: 87px;
+	height: 117px;
 	padding-bottom: 0px;
-	padding: 13px;
+	padding: 10px;
 	margin-bottom: -45px;
 }
 
@@ -923,6 +929,7 @@ ol {
 	color: #111111;
 	padding-top: 5px;
 	
+	
 }
 
 .product-item .pi-text p {
@@ -930,6 +937,8 @@ ol {
 	color: #111111;
 	margin-bottom: 0;
 	font-weight: 400;
+	padding-top: 10px;
+	
 }
 
 .product-item .quantity{
@@ -1217,7 +1226,7 @@ ol {
 
 .page-top-info {
 	background: #f8f7f7;
-	padding: 60px 0 70px;
+	padding: 30px 0 35px;
 }
 
 .page-top-info h4 {
@@ -1671,11 +1680,12 @@ ol {
 
 .quantity p {
 	float: left;
-	margin-right: 10px;
+	margin-right: 5px;
 	font-weight: 600;
 	color: #414141;
 	padding-top: 5px;
-	margin-bottom: 0;
+	margin-bottom: 15px;
+	margin-left: 35px;
 }
 
 .quantity .pro-qty {
@@ -1685,6 +1695,8 @@ ol {
 	padding: 0 15px;
 	border-radius: 40px;
 	float: left;
+	margin-left: 50px;
+	
 	
 }
 
@@ -1697,6 +1709,7 @@ ol {
 	text-align: center;
 	font-size: 18px;
 	color: #404040;
+	
 }
 
 .quantity .pro-qty input {
@@ -1834,6 +1847,7 @@ ol {
 	-webkit-box-pack: center;
 	-ms-flex-pack: center;
 	justify-content: center;
+
 }
 
 .cart-table .quantity .pro-qty {
@@ -2440,4 +2454,181 @@ ol {
 	}
 }
 
+.check-box{
+	border-top:2px solid #d35454;
+	padding:10px;
+	background:#FFF;
+	margin:10px 0px;
+}
+
+.accordion {
+  padding: 0;
+  margin: 0em 0;
+  width: 100%;
+  overflow: hidden;
+  font-size: 19px;
+  position: relative;
+}
+
+	.panel-heading .accordion-toggle:after {
+    font-family: 'Material-Design-Iconic-Font';  
+    content: "\f2f9";
+    float: right;       
+    color: grey;    
+	margin-top: 12px;
+}
+.panel-heading .accordion-toggle.collapsed:after {
+    content: "\f2fb";    
+}
+.accordion-toggle p{
+  float:left;
+  font-size:15px;
+  margin:5px !important;
+width: 70% !important;}
+
+.form-area{
+	width: 350px;
+	height: 375px;
+	margin: 10px 10px 20px;
+	position: relative;
+	background: rgba(0,0,0,0.1);
+	text-align: center;
+	padding: 30px;
+	border: 3px solid #fff;20;
+	-moz-border-radius: 20;
+	border-radius: 20px;
+}
+
+
+.btn{
+	display: inline-block;
+	height: 40px;
+	width: 150px;
+	line-height: 40px;
+	overflow: hidden;
+	position: absolute;
+	text-align: center;
+	background: #413a3a;
+	border-radius: 25px;
+	color: #fff;
+	text-transform: uppercase;
+	margin-top: 0;
+	cursor: pointer;
+	text-decoration: none;
+	_webkit_transition: top 0.4s ease-in-out;
+	_moz_transition: top 0.4s ease-in-out;
+	_ms_transition: top 0.4s ease-in-out;
+	_o_transition: top 0.4s ease-in-out;
+	transition: top 0.4s ease-in-out;
+
+}
+
+.btn-text{
+	display: block;
+	height: 100%;
+	position: relative;
+	top: 0;
+	_webkit_transition: top 0.4s ease-in-out;
+	_moz_transition: top 0.4s ease-in-out;
+	_ms_transition: top 0.4s ease-in-out;
+	_o_transition: top 0.4s ease-in-out;
+	transition: top 0.4s ease-in-out;
+	width: 100%;
+	font-weight:bold;
+}
+
+.btn:hover{
+	background: #f51167;
+}
+
+.btn:hover .btn-text{
+	background-color: transparent;
+	
+}	
+
+.button{
+	margin-top: 100px;
+	padding: 20px;
+	margin-left: 70px;
+}
+
+.icon{
+  position:absolute;
+  left:18px;
+  top:9px;
+  font-size:30px;
+}
+
+.wrapper{
+  padding:5%;
+}
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 43;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  overflow-x: hidden;
+  transition: 0.3s;
+  padding-top: 60px;
+  border:0.5px solid #111;
+
+}
+
+
+.sidenav input{
+	width:80%;
+	height: 50px;
+	position:absolute;
+	left: 15px;
+	text-align: center
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+		.input-container{
+			display: flex;
+			width: 100%;
+			margin-bottom: 15px;
+		}
+		.icon{
+			padding: 15px;
+			background: dodgerblue;
+			color: #fff;
+			min-width: 60px;
+			text-align: center;
+		}
+		.input-field{
+			width: 100%;
+			padding: 10px;
+			outline: none;
+			font-size: 15px;
+		}
+.input-field:focus{
+	border: 2px solid dodgerblue;
+}
+
+.carousel-indicators{
+	background-size: cover;
+	background-position: center;
+}
 

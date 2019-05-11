@@ -26,6 +26,7 @@ class ScrapBookings extends \yii\db\ActiveRecord
      * {@inheritdoc}
      */
 	public $scrap_name;
+	public $needcash;
     public static function tableName()
     {
         return 'scrap_bookings';
@@ -37,11 +38,11 @@ class ScrapBookings extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'email', 'mobile', 'pickup_address', 'pick_date', 'pickup_time', 'pickup_term', 'pickup_scrap', 'scrap_quantity', 'createdDate'], 'required'],
-        	[['name', 'email', 'mobile', 'pickup_address', 'pick_date', 'pickup_time', 'pickup_term', 'pickup_scrap', 'scrap_quantity', 'createdDate'], 'safe'],
+            [['name', 'email', 'mobile',  'pick_date', 'pickup_time',  'createdDate'], 'required'],
+        	[['name', 'email', 'mobile', 'pickup_address', 'pick_date', 'pickup_time', 'createdDate'], 'safe'],
             [['pickup_address'], 'string'],
             [['pick_date', 'createdDate', 'updatedDate'], 'safe'],
-            [['name', 'email', 'pickup_time', 'pickup_term', 'pickup_scrap', 'scrap_quantity'], 'string', 'max' => 200],
+            [['name', 'email', 'pickup_time', ], 'string', 'max' => 200],
             [['mobile'], 'string', 'max' => 20],
         ];
     }

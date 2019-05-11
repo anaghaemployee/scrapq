@@ -9,7 +9,10 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use frontend\modules\scraps\models\Scraps;
-
+use frontend\modules\cart\models\Cart;
+use frontend\modules\scraps\models\BookingScraps;
+use frontend\modules\scraps\models\BookingConfimation;
+use yii\data\ActiveDataProvider;
 /**
  * ScrapbookingsController implements the CRUD actions for ScrapBookings model.
  */
@@ -53,8 +56,21 @@ class ScrapbookingsController extends Controller
      */
     public function actionView($id)
     {
+    	$total =0;
+    	$model = $this->findModel($id);
+    	$BookingConfimation = BookingConfimation::find()->where(['scrap_book_id'=>$id])->one();
+    	$Bookingtotal = BookingScraps::find()->where(['scrap_book_id'=>$id])->all();
+    	foreach ($Bookingtotal  as $key=>$value){
+    		$total = $total + $value['price_weight'];
+    	}
+    	$BookingScraps = new ActiveDataProvider([
+    			'query' => BookingScraps::find()->where(['scrap_book_id'=>$id]),
+    	]);
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+        	'dataProvider'=>$BookingScraps,
+        	'BookingConfimation'=>$BookingConfimation,
+        	'total'=>$total
         ]);
     }
 
@@ -65,27 +81,61 @@ class ScrapbookingsController extends Controller
      */
     public function actionCreate()
     {
-        $model = new ScrapBookings();
-        $scrapinfo = Scraps::find()->select('scrap_id,scarp_name')->all();
-        $scraps =array();
-        for($k=0;$k<count($scrapinfo);$k++)
-        {
-        	//$hospital['Prompt'] = 'Select Hospital Name';
-        	$scraps[$scrapinfo[$k]['scarp_name']] = $scrapinfo[$k]['scarp_name'];
-        }
-        $model->scrap_name = $scraps;
-
+    	
+    	$this->layout = '/version';
+        $model = new ScrapBookings();       
         if ($model->load(Yii::$app->request->post())) {
-        	
+        	//print_r($model);exit;
+        	$cartdata = Cart::find()->where(['session_id'=>Yii::$app->session->getId(),'booking_id'=>0])->all();
+      		if(!empty($cartdata)){
         	$model->createdDate = date("Y-m-d H:i:s");
-        	$model->save();
+        		if($model->save()){
+        			foreach($cartdata as $key=>$value){
+        				$bookscrapsmodel = new BookingScraps();
+        				$bookscrapsmodel->scrap_book_id = $model->scrap_book_id;
+        				$bookscrapsmodel->scrapId = $value['scrap_id'];
+        				$bookscrapsmodel->scrap_name	 = $value['scrap_name'];
+        				$bookscrapsmodel->weightquantity =$value['weightquantity'];
+        				$bookscrapsmodel->price = $value['price'];
+        				$bookscrapsmodel->price_weight = $value['price_weight'];
+        				$bookscrapsmodel->save();
+        			}        			
+        		}
+        	//Cart::deleteAll(['session_id'=> Yii::$app->session->getId()]);
         	Yii::$app->session->setFlash('success', 'Successfully Book the Appointment');
-            return $this->redirect(['/site/index']);
+            return $this->redirect(['/cart/cart','id'=>$model->scrap_book_id]);
+       		}
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+    }
+    public function actionConfimation()
+    {
+    	$id = $_GET['id'];
+    	$amount =0;
+    	$bookingid = $_GET['bookingid'];    	
+    	$model = new BookingConfimation();
+    	$model->type = $id;
+    	$model->scrap_book_id = $bookingid;
+    	$BookingScraps = BookingScraps::find()->where(['scrap_book_id'=>$bookingid])->all();
+    	foreach ($BookingScraps as $key=>$value){
+    		$amount = $amount + $value['price_weight'];
+    	}
+    	$model->amount = $amount;
+    	$query = BookingConfimation::find()->where(['scrap_book_id'=>$bookingid])->one();
+    	if(empty($query)){
+    		if(!empty($model->scrap_book_id)){
+    		$model->save();
+    		$json['status']="success";
+    		Cart::deleteAll(['session_id'=> Yii::$app->session->getId()]);
+    		}
+    		else{
+    			$json['status']="fail";
+    		}
+    	}
+    	else{
+    		$json['status']="fail";
+    	}
+    	return json_encode($json);
+    	
     }
 
     /**

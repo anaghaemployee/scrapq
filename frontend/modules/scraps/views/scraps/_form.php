@@ -26,7 +26,9 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'scrap_image')->fileInput() ?>
 
     <?= $form->field($model, 'scrap_status')->dropDownList([ 'Active' => 'Active', 'In-active' => 'In-active', ], ['prompt' => 'Select Scrap Status']) ?>
+<?= $form->field($model, 'scrap_price')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'scrap_quantity')->textInput(['maxlength' => true]) ?>
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>

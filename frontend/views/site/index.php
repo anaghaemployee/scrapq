@@ -5,6 +5,7 @@
 $this->title = 'My Yii Application';
 use yii\helpers\Url;
 $homeurl = Url::base();
+
 $cartindex = Yii::$app->UrlManager->createUrl(['/cart/cart']);
 ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -28,7 +29,7 @@ $cartindex = Yii::$app->UrlManager->createUrl(['/cart/cart']);
 					foreach($scraps as $key=>$value){?>
 				<div class="product-item">
 					<div class="pi-pic">
-						<img src="<?php echo './frontend/web/'. $value['scrap_image'] ?>" alt="">
+						<img src="<?php echo $homeurl.'/'. $value['scrap_image'] ?>" alt="">
 						
 					</div>
 					
@@ -38,19 +39,20 @@ $cartindex = Yii::$app->UrlManager->createUrl(['/cart/cart']);
 					</div>
 					<div class="quantity">
 						<p>Select Weight</p>
-                        <div class="pro-qty"><span class="dec qtybtn" decid="<?= $key;?>">-</span><input type="text" id="scrap-<?= $key;?>"  value="0"><span class="inc qtybtn" incid="<?= $key;?>" >+</span></div>
+                        <div class="pro-qty"><span class="dec qtybtn" decid="<?= $key;?>" scrapid = "<?= $value['scrap_id'];?>">-</span><input type="text" id="scrap-<?= $key;?>"  value="0"><span class="inc qtybtn" incid="<?= $key;?>" scrapid = "<?= $value['scrap_id'];?>">+</span></div>
                     </div>
                     <div>
-					<button class="add-to-cart" cartid="<?= $key;?>" scrapid = "<?= $value['scrap_id'];?>"> Add to Cart </button>
+					<!--  <button class="add-to-cart" cartid="<?php //$key;?>" scrapid = "<?= $value['scrap_id'];?>"> Add to Cart </button>
+				-->
 				</div>
 				</div>
 				
 				<?php }}?>
 			</div>
 		</div>
-		<div style="text-align:right;padding-right:100px;">
-		<a href="<?php echo $cartindex;?>"><button id="viewcart"> View Cart </button></a>
-		</div>
+		<!-- <div style="text-align:right;padding-right:100px;">
+		<a href="<?php //echo $cartindex;?>"><button id="viewcart"> View Cart </button></a>
+		</div> -->
 	</section>
 	<!-- RELATED PRODUCTS section end -->
 	<?php  $url =Yii::$app->UrlManager->createUrl(['/site/weightupdation']);
@@ -76,10 +78,10 @@ jQuery(document).ready(function() {
 		    "<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"     
 		    ]
 	  });
-	  var cartdata = '<?php  echo $cartdata;?>';
-	  if(cartdata == 0){
-		  document.getElementById("viewcart").disabled = true;
-	  }
+	 // var cartdata = '<?php // echo $cartdata;?>';
+	  //if(cartdata == 0){
+		//  document.getElementById("viewcart").disabled = true;
+	 // }
 	});
 
 $(function () {
@@ -97,7 +99,7 @@ $(function () {
 		    	   var obj = JSON.parse(response);
 		    	   if(obj['status'] == 'Success'){
 			    	   alert("Cart addeded Successfully");
-		    		   document.getElementById("viewcart").disabled = false;
+		    		   //document.getElementById("viewcart").disabled = false;
 		    	   }
 		       },
 		       error: function(jqXHR, textStatus, errorThrown) {
@@ -115,13 +117,14 @@ $(function () {
 	
 $(function () {
 	$(".inc").on('click',function(){
-		var incidofqty = $(this).attr('incid');
+		var incidofqty = $(this).attr('incid');		
 		var qty = $('#scrap-'+incidofqty).val();
+		var scrapid =$(this).attr('scrapid');
 		var price = $('#price-'+incidofqty).attr('price');
 		$.ajax({
-		       url: '<?php echo $url;?>',
+		       url: '<?php echo $carturl;?>',
 		       type: "get",
-		       data: {qty: qty , price: price ,inc :'inc'} ,
+		       data: {qty: qty , price: price ,scrapid :scrapid,inc :'inc'} ,
 		       success: function (response) {
 		    	   	  //console.log(response);
 		    	   	  var obj = JSON.parse(response);
@@ -129,6 +132,7 @@ $(function () {
 		    	   	  var priceupdate = 'price-'+incidofqty;
 		    	   	document.getElementById(qtyupdate).value = obj['qty'];
 		    	   	document.getElementById(priceupdate).innerHTML = obj['price'];
+		    	   	document.getElementById("cartcount").innerHTML = obj['cartcount'];
 		       },
 		       error: function(jqXHR, textStatus, errorThrown) {
 		          console.log(textStatus, errorThrown);
@@ -142,19 +146,21 @@ $(function () {
 	$(".dec").on('click',function(){
 		var decidofqty = $(this).attr('decid');
 		var qty = $('#scrap-'+decidofqty).val();
+		var scrapid =$(this).attr('scrapid');
 		var price = $('#price-'+decidofqty).attr('price');
 		var qtyupdate = 'scrap-'+decidofqty;
 	    var priceupdate = 'price-'+decidofqty;
-		if(qty > 1){
+		
 		$.ajax({
-		       url: '<?php echo $url;?>',
+		       url: '<?php echo $carturl;?>',
 		       type: "get",
-		       data: {qty: qty , price: price ,inc :'dec'} ,
+		       data: {qty: qty , price: price ,scrapid :scrapid,inc :'dec'} ,
 		       success: function (response) {
 		    	   	  //console.log(response);
 		    	   	  var obj = JSON.parse(response);
 			    	document.getElementById(qtyupdate).value = obj['qty'];
 		    	   	document.getElementById(priceupdate).innerHTML = obj['price'];
+		    	   	document.getElementById("cartcount").innerHTML = obj['cartcount'];
 		       },
 		       error: function(jqXHR, textStatus, errorThrown) {
 		          console.log(textStatus, errorThrown);
@@ -162,10 +168,7 @@ $(function () {
 
 
 		   });
-		}
-		else{
-    	   	document.getElementById(qtyupdate).value = 0;
-		}
+		
 	});
 });
 </script>

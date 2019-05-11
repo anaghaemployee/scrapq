@@ -40,9 +40,9 @@ AppAsset::register($this);
         //['label' => 'About', 'url' => ['/site/about']],
        // ['label' => 'Contact', 'url' => ['/site/contact']],
     	['label' => 'Scraps', 'url' => ['/scraps/scraps/index']],
-    	['label' => 'Booka Appointment', 'url' => ['/scraps/scrapbookings/create']],
+    	
     	['label' => 'Scrap Bookings', 'url' => ['/scraps/scrapbookings/index']],
-		['label' => 'Scrap Prices', 'url' => ['/scraps/scrapprices/index']],
+		//['label' => 'Scrap Prices', 'url' => ['/scraps/scrapprices/index']],
 
     ];
     if (Yii::$app->user->isGuest) {

@@ -25,7 +25,7 @@ class ScrapAsset extends AssetBundle
     public $js = [
     	/* 'v1/js/jquery-1.11.1.min.js', */
     	'v1/js/bootstrap.min.js',
-    	'v1/js/jquery-3.2.1.min.js',
+    	//'v1/js/jquery-3.2.1.min.js',
     	'v1/js/jquery-ui.min.js',
     	'v1/js/jquery.nicescroll.min.js',
     	'v1/js/jquery.slicknav.min.js',

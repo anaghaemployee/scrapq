@@ -4,6 +4,7 @@ namespace frontend\modules\scraps\controllers;
 
 use Yii;
 use frontend\modules\scraps\models\Scraps;
+use frontend\modules\scraps\models\ScrapPrices;
 use frontend\modules\scraps\models\ScrapsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -53,8 +54,12 @@ class ScrapsController extends Controller
      */
     public function actionView($id)
     {
+    	$model =$this->findModel($id);
+    	$ScrapPrices = ScrapPrices::find()->where(['scrap_id'=>$model->scrap_id])->one();
+    	$model->scrap_price = $ScrapPrices->scrap_price;
+    	$model->scrap_quantity=$ScrapPrices->scrap_quantity;
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' =>$model ,
         ]);
     }
 
@@ -80,7 +85,13 @@ class ScrapsController extends Controller
         		$model->scrap_image = '';
         	}
         	$model->createdDate = date("Y-m-d H:i:s");
-        	 $model->save();
+        	 if($model->save()){
+        	 	$scrapprices = new ScrapPrices();
+        	 	$scrapprices->scrap_id = $model->scrap_id;
+        	 	$scrapprices->scrap_price = $model->scrap_price;
+        	 	$scrapprices->scrap_quantity = $model->scrap_quantity;
+        	 	$scrapprices->save();
+        	 }
         	 Yii::$app->session->setFlash('success', 'Successfully create the scraps');
             return $this->redirect(['index']);
         }
@@ -101,7 +112,9 @@ class ScrapsController extends Controller
     {
         $model = $this->findModel($id);
         $scrapimage = $model->scrap_image;
-
+        $ScrapPrices = ScrapPrices::find()->where(['scrap_id'=>$model->scrap_id])->one();
+		$model->scrap_price = $ScrapPrices->scrap_price;
+		$model->scrap_quantity=$ScrapPrices->scrap_quantity;
         if ($model->load(Yii::$app->request->post())) {
         	$model->scrap_image = UploadedFile::getInstance($model,'scrap_image');
         	if(!(empty($model->scrap_image)))
@@ -115,7 +128,11 @@ class ScrapsController extends Controller
         		$model->scrap_image = $scrapimage;
         	}
         	
-        	$model->save();
+        	if($model->save()){
+        		$ScrapPrices->scrap_price = $model->scrap_price;
+        		$ScrapPrices->scrap_quantity=$model->scrap_quantity;
+        		$ScrapPrices->save();
+        	}
             return $this->redirect(['view', 'id' => $model->scrap_id]);
         }
 

@@ -22,11 +22,12 @@ class Cart extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+	public $model;
     public static function tableName()
     {
         return 'cart';
     }
-
+	
     /**
      * {@inheritdoc}
      */
@@ -36,7 +37,7 @@ class Cart extends \yii\db\ActiveRecord
             [['scrap_id', 'scrap_name', 'session_id', 'weightquantity', 'price', 'price_weight', 'created_date', 'updated_date'], 'required'],
             [['scrap_id', 'weightquantity'], 'integer'],
             [['price', 'price_weight'], 'number'],
-            [['created_date', 'updated_date'], 'safe'],
+            [['created_date', 'updated_date','model'], 'safe'],
             [['scrap_name', 'session_id'], 'string', 'max' => 200],
         ];
     }
@@ -57,5 +58,11 @@ class Cart extends \yii\db\ActiveRecord
             'created_date' => 'Created Date',
             'updated_date' => 'Updated Date',
         ];
+    }
+    public static function findCartData($bookingid)
+    {
+    	$data = array();
+    	$data = Cart::find('cart.*,oc_product.model')->innerjoin(['oc_product','cart.scrap_id=oc_product.product_id'])->where(['booking_id'=>$bookingid])->asArray()->all();
+    	return $data;
     }
 }
